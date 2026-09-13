@@ -5,8 +5,728 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Парикмахерская — Запись на листочке</title>
   <meta name="description" content="Обычная нормальная парикмахерская. Запишитесь на листочке и отправьте голубем!">
-  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Шрифты Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Neucha&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Встроенные стили для 100% надежного отображения без проблем с кэшем -->
+  <style>
+    :root {
+      --bg-page: #f4efe6;
+      --bg-sheet: #fffdf9;
+      --paper-line: #d8e5f3;
+      --paper-grid: #e2ebf4;
+      --paper-margin: #ff8a80;
+      
+      --ink-blue: #1a365d;
+      --ink-pen: #1e3a8a;
+      --ink-dark: #2d3748;
+      --ink-muted: #5a6578;
+      --stamp-red: #c53030;
+      
+      --accent-gold: #eab308;
+      --accent-green: #22c55e;
+      --tape-color: rgba(254, 240, 138, 0.7);
+      
+      --font-hand: 'Caveat', cursive, sans-serif;
+      --font-notes: 'Neucha', cursive, sans-serif;
+      --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      --shadow-paper: 0 10px 25px rgba(80, 60, 40, 0.12), 0 2px 6px rgba(0, 0, 0, 0.05);
+      --shadow-float: 0 20px 35px rgba(80, 60, 40, 0.2);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(217, 180, 130, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(180, 160, 120, 0.2) 0%, transparent 40%),
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 20px 20px;
+      color: var(--ink-dark);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    /* Скотч на уголках */
+    .tape {
+      position: absolute;
+      width: 110px;
+      height: 30px;
+      background-color: var(--tape-color);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      z-index: 5;
+    }
+
+    .tape.tape-top-left {
+      top: -14px;
+      left: 20px;
+      transform: rotate(-6deg);
+    }
+
+    .tape.tape-top-right {
+      top: -14px;
+      right: 20px;
+      transform: rotate(5deg);
+    }
+
+    /* Шапка */
+    .header {
+      padding: 24px 0 16px;
+      text-align: center;
+    }
+
+    .header-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border: 2px dashed #b8a68b;
+      padding: 8px 22px;
+      border-radius: 30px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .logo-title {
+      font-family: var(--font-notes);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--ink-blue);
+      line-height: 1;
+    }
+
+    .logo-sub {
+      font-family: var(--font-hand);
+      font-size: 1.4rem;
+      color: #7c5e38;
+      margin-top: 4px;
+    }
+
+    .header-contacts-chip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .header-contacts-chip a {
+      color: var(--ink-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .header-contacts-chip a:hover {
+      text-decoration: underline;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      margin-right: 6px;
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    /* Главный блок с листком */
+    .hero-section {
+      padding: 20px 0 40px;
+    }
+
+    .hero-intro {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 28px;
+    }
+
+    .hero-heading {
+      font-family: var(--font-notes);
+      font-size: 2.6rem;
+      line-height: 1.2;
+      color: var(--ink-dark);
+      margin-bottom: 8px;
+    }
+
+    .hero-subheading {
+      font-family: var(--font-hand);
+      font-size: 1.65rem;
+      color: var(--ink-pen);
+      line-height: 1.3;
+    }
+
+    /* САМ ТЕТРАДНЫЙ ЛИСТОК */
+    .sheet-wrapper {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto 50px;
+    }
+
+    .notepad-sheet {
+      background-color: var(--bg-sheet);
+      background-image: 
+        linear-gradient(to right, transparent 64px, var(--paper-margin) 64px, var(--paper-margin) 66px, transparent 66px),
+        linear-gradient(var(--paper-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px, 24px 24px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-paper);
+      border: 1px solid #e2d9c8;
+      position: relative;
+      padding: 40px 30px 40px 85px;
+      transform: rotate(-0.5deg);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .notepad-sheet:hover {
+      transform: rotate(0deg);
+      box-shadow: var(--shadow-float);
+    }
+
+    .notepad-header {
+      border-bottom: 2px dashed #cbd5e1;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .sheet-title {
+      font-family: var(--font-hand);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--ink-pen);
+      line-height: 1;
+    }
+
+    .sheet-date-stamp {
+      font-family: var(--font-hand);
+      font-size: 1.35rem;
+      color: #8b5cf6;
+      transform: rotate(2deg);
+    }
+
+    /* Форма на листочке */
+    .paper-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .paper-line-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .paper-label {
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      color: var(--ink-dark);
+      font-weight: 700;
+    }
+
+    .paper-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #94a3b8;
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      color: var(--ink-pen);
+      padding: 4px 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .paper-input:focus {
+      border-bottom-color: var(--ink-blue);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .paper-input::placeholder {
+      color: #a0aec0;
+      font-size: 1.35rem;
+    }
+
+    /* Чекбоксы услуг */
+    .services-checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .checkbox-hand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(200, 210, 225, 0.8);
+      transition: all 0.2s;
+    }
+
+    .checkbox-hand:hover {
+      background: #fff;
+      border-color: #64748b;
+    }
+
+    .checkbox-hand input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--ink-pen);
+    }
+
+    .service-title-text {
+      font-family: var(--font-hand);
+      font-size: 1.35rem;
+      color: var(--ink-dark);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .service-price-tag {
+      font-family: var(--font-hand);
+      font-size: 1.25rem;
+      color: #c53030;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    /* Дата и Время */
+    .paper-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* КНОПКА ОТПРАВИТЬ ГОЛУБЕМ */
+    .pigeon-btn-container {
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .btn-pigeon {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 28px;
+      font-family: var(--font-notes);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .btn-pigeon:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-pigeon:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .pigeon-icon {
+      font-size: 1.8rem;
+      display: inline-block;
+      animation: pigeon-bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes pigeon-bounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(-6deg); }
+    }
+
+    .pigeon-note {
+      font-family: var(--font-hand);
+      font-size: 1.25rem;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    /* ПЕЧАТЬ «ДОСТАВЛЕНО ГОЛУБЕМ» */
+    .delivered-stamp {
+      position: absolute;
+      top: 38%;
+      right: 25px;
+      transform: rotate(-14deg) scale(0.8);
+      border: 4px solid var(--stamp-red);
+      padding: 12px 24px;
+      border-radius: 12px;
+      color: var(--stamp-red);
+      font-family: var(--font-notes);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 6px 20px rgba(197, 48, 48, 0.25);
+      z-index: 10;
+      animation: stamp-drop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes stamp-drop {
+      0% { transform: rotate(-25deg) scale(2); opacity: 0; }
+      100% { transform: rotate(-14deg) scale(1); opacity: 1; }
+    }
+
+    .stamp-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .stamp-sub {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      margin-top: 4px;
+    }
+
+    /* АНИМАЦИЯ ЛЕТЯЩЕГО ГОЛУБЯ */
+    .sky-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .pigeon-flight {
+      position: absolute;
+      bottom: 20%;
+      left: -150px;
+      width: 140px;
+      height: 100px;
+      opacity: 0;
+    }
+
+    .pigeon-flight.flying {
+      opacity: 1;
+      animation: flyAcrossScreen 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes flyAcrossScreen {
+      0% {
+        left: -120px;
+        bottom: 25%;
+        transform: scale(0.6) rotate(-10deg);
+      }
+      30% {
+        transform: scale(1.1) rotate(5deg);
+      }
+      70% {
+        transform: scale(1) rotate(-8deg);
+      }
+      100% {
+        left: 110vw;
+        bottom: 75%;
+        transform: scale(0.7) rotate(15deg);
+      }
+    }
+
+    /* Сообщение подтверждения */
+    .success-card {
+      background: #f0fdf4;
+      border: 2px dashed #22c55e;
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .success-card h4 {
+      font-family: var(--font-notes);
+      font-size: 1.7rem;
+      color: #15803d;
+      margin-bottom: 6px;
+    }
+
+    .success-card p {
+      font-family: var(--font-hand);
+      font-size: 1.35rem;
+      color: #166534;
+    }
+
+    /* ПРАЙС-ЛИСТ */
+    .price-section {
+      padding: 40px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-family: var(--font-notes);
+      font-size: 2.4rem;
+      color: var(--ink-dark);
+    }
+
+    .section-desc {
+      font-family: var(--font-hand);
+      font-size: 1.4rem;
+      color: var(--ink-muted);
+    }
+
+    .menu-paper {
+      background: var(--bg-sheet);
+      border: 1px solid #e2d9c8;
+      border-radius: var(--radius-sm);
+      padding: 35px;
+      box-shadow: var(--shadow-paper);
+      position: relative;
+      background-image: repeating-linear-gradient(transparent, transparent 31px, var(--paper-line) 31px, var(--paper-line) 32px);
+    }
+
+    .price-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      position: relative;
+    }
+
+    .price-name {
+      font-family: var(--font-notes);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink-dark);
+      background: var(--bg-sheet);
+      padding-right: 12px;
+      z-index: 2;
+    }
+
+    .price-dots {
+      flex-grow: 1;
+      border-bottom: 2px dotted #cbd5e1;
+      margin: 0 4px;
+    }
+
+    .price-value {
+      font-family: var(--font-hand);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #b91c1c;
+      background: var(--bg-sheet);
+      padding-left: 12px;
+      z-index: 2;
+    }
+
+    .price-free {
+      color: #16a34a !important;
+    }
+
+    /* ПОЧЕМУ У НАС ХОРОШО */
+    .why-section {
+      padding: 40px 0 60px;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .why-card {
+      background: #fff;
+      border-radius: var(--radius-sm);
+      padding: 26px 20px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      position: relative;
+      transform: rotate(0.8deg);
+      transition: transform 0.2s;
+    }
+
+    .why-card:nth-child(2) {
+      transform: rotate(-1deg);
+    }
+
+    .why-card:nth-child(3) {
+      transform: rotate(0.5deg);
+    }
+
+    .why-card:hover {
+      transform: rotate(0deg) translateY(-4px);
+    }
+
+    .why-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .why-card h3 {
+      font-family: var(--font-notes);
+      font-size: 1.4rem;
+      color: var(--ink-dark);
+      margin-bottom: 8px;
+    }
+
+    .why-card p {
+      font-family: var(--font-hand);
+      font-size: 1.3rem;
+      color: var(--ink-muted);
+      line-height: 1.35;
+    }
+
+    /* КОНТАКТЫ */
+    .contacts-section {
+      padding: 20px 0 60px;
+    }
+
+    .contacts-box {
+      background: #fff;
+      border: 2px dashed #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 30px;
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .contacts-box h3 {
+      font-family: var(--font-notes);
+      font-size: 1.8rem;
+      color: var(--ink-dark);
+      margin-bottom: 12px;
+    }
+
+    .contacts-box p {
+      font-family: var(--font-hand);
+      font-size: 1.45rem;
+      color: var(--ink-pen);
+      margin-bottom: 16px;
+    }
+
+    .contacts-links {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-page);
+      border: 1px solid #cbd5e1;
+      border-radius: 30px;
+      font-family: var(--font-notes);
+      font-size: 1.2rem;
+      color: var(--ink-dark);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-contact:hover {
+      background: var(--ink-blue);
+      color: #fff;
+    }
+
+    /* ПОДВАЛ */
+    .footer {
+      text-align: center;
+      padding: 30px 0;
+      border-top: 1px solid #e2d9c8;
+      font-family: var(--font-hand);
+      font-size: 1.25rem;
+      color: var(--ink-muted);
+    }
+
+    /* АДАПТИВНОСТЬ */
+    @media (max-width: 680px) {
+      .notepad-sheet {
+        padding: 35px 20px 35px 55px;
+        background-image: 
+          linear-gradient(to right, transparent 44px, var(--paper-margin) 44px, var(--paper-margin) 46px, transparent 46px),
+          linear-gradient(var(--paper-grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--paper-grid) 1px, transparent 1px);
+        background-size: 100% 100%, 20px 20px, 20px 20px;
+      }
+      
+      .services-checklist {
+        grid-template-columns: 1fr;
+      }
+      
+      .paper-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      
+      .hero-heading {
+        font-size: 2.1rem;
+      }
+      
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .delivered-stamp {
+        right: 10px;
+        top: 35%;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -50,8 +770,8 @@
           <!-- Сам тетрадный листок -->
           <div class="notepad-sheet">
             
-            <!-- Печать Доставлено голубем (появляется после отправки) -->
-            <div id="deliveredStamp" class="delivered-stamp">
+            <!-- Печать Доставлено голубем (по умолчанию скрыта) -->
+            <div id="deliveredStamp" class="delivered-stamp" style="display: none;">
               <div class="stamp-title">
                 <span>🕊️ ДОСТАВЛЕНО!</span>
               </div>
@@ -146,8 +866,8 @@
                 <p class="pigeon-note">Голубь полетит прямо мастеру в парикмахерскую. Запись железная!</p>
               </div>
 
-              <!-- Блок после доставки -->
-              <div id="successCard" class="success-card">
+              <!-- Блок после доставки (по умолчанию скрыт) -->
+              <div id="successCard" class="success-card" style="display: none;">
                 <h4>Голубь прилетел, записка в руках мастера! 🕊️</h4>
                 <p style="margin-bottom: 12px;">Спасибо, мы вас записали. Приходите ко времени, чай с печеньем уже наготове.</p>
                 <div id="summaryDetails" style="font-family: var(--font-hand); font-size: 1.45rem; color: #1e3a8a; background: #fff; padding: 12px; border-radius: 6px; border: 1px dashed #86efac; text-align: left; line-height: 1.5;"></div>
@@ -279,6 +999,171 @@
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <!-- Встроенный надежный JS-скрипт -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initTelegram();
+      initPigeonBooking();
+      initAutoDate();
+    });
+
+    function initTelegram() {
+      if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+          const u = tg.initDataUnsafe.user;
+          const nameField = document.getElementById('clientName');
+          if (nameField && !nameField.value) {
+            nameField.value = [u.first_name, u.last_name].filter(Boolean).join(' ') || u.username || '';
+          }
+        }
+      }
+    }
+
+    function initAutoDate() {
+      const dateStamp = document.getElementById('dateStamp');
+      const dateInput = document.getElementById('visitDate');
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+
+      if (dateStamp) {
+        dateStamp.textContent = `«${day}» / ${month} / ${year} г.`;
+      }
+      if (dateInput) {
+        dateInput.min = `${year}-${month}-${day}`;
+        dateInput.value = `${year}-${month}-${day}`;
+      }
+    }
+
+    function initPigeonBooking() {
+      const form = document.getElementById('pigeonForm');
+      const pigeonBtn = document.getElementById('pigeonBtn');
+      const stamp = document.getElementById('deliveredStamp');
+      const successCard = document.getElementById('successCard');
+      const summaryDetails = document.getElementById('summaryDetails');
+      const skyOverlay = document.getElementById('skyOverlay');
+
+      if (!form || !pigeonBtn) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('clientName').value.trim();
+        const phone = document.getElementById('clientPhone').value.trim();
+        const date = document.getElementById('visitDate').value;
+        const time = document.getElementById('visitTime').value;
+
+        const checkedBoxes = document.querySelectorAll('input[name="services"]:checked');
+        const selectedServices = Array.from(checkedBoxes).map(cb => cb.value);
+
+        if (!name || !phone) {
+          alert('Черкните, пожалуйста, имя и телефончик на листочке!');
+          return;
+        }
+
+        if (selectedServices.length === 0) {
+          alert('Поставьте галочку хотя бы напротив одной услуги :)');
+          return;
+        }
+
+        pigeonBtn.disabled = true;
+        pigeonBtn.innerHTML = '<span>Голубь взлетает... 🕊️</span>';
+
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        }
+
+        launchPigeon(skyOverlay, () => {
+          if (stamp) stamp.style.display = 'block';
+
+          if (summaryDetails) {
+            summaryDetails.innerHTML = `
+              <strong>Гость:</strong> ${escapeHtml(name)} (${escapeHtml(phone)})<br>
+              <strong>Что делаем:</strong> ${escapeHtml(selectedServices.join(', '))}<br>
+              <strong>Когда ждём:</strong> ${escapeHtml(date)} в ${escapeHtml(time)}
+            `;
+          }
+
+          if (successCard) successCard.style.display = 'block';
+          pigeonBtn.style.display = 'none';
+
+          if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+          }
+
+          successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    function launchPigeon(container, onComplete) {
+      if (!container) {
+        if (onComplete) onComplete();
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="pigeon-flight flying" id="animatedPigeon">
+          <svg viewBox="0 0 120 100" width="130" height="110" style="filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));">
+            <path d="M20,60 Q45,35 70,45 Q95,45 105,35 Q110,40 100,55 Q85,75 55,75 Q30,75 20,60 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+            <path d="M45,50 Q60,10 85,15 Q65,40 50,55 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="2">
+              <animateTransform attributeName="transform" type="rotate" values="0 50 55; -35 50 55; 0 50 55" dur="0.25s" repeatCount="indefinite"/>
+            </path>
+            <path d="M10,65 L25,58 L22,70 Z" fill="#94a3b8"/>
+            <circle cx="98" cy="42" r="2.5" fill="#1e293b"/>
+            <polygon points="105,42 118,46 106,49" fill="#f59e0b"/>
+            <g transform="translate(108, 46) rotate(15)">
+              <rect width="18" height="13" rx="2" fill="#fffdfa" stroke="#b91c1c" stroke-width="1.2"/>
+              <line x1="0" y1="0" x2="9" y2="7" stroke="#b91c1c" stroke-width="1"/>
+              <line x1="18" y1="0" x2="9" y2="7" stroke="#b91c1c" stroke-width="1"/>
+            </g>
+          </svg>
+        </div>
+      `;
+
+      playFlapSound();
+
+      setTimeout(() => {
+        container.innerHTML = '';
+        if (onComplete) onComplete();
+      }, 2700);
+    }
+
+    function playFlapSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        [0, 0.25, 0.5, 0.75].forEach(time => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(140, ctx.currentTime + time);
+          osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + time + 0.12);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime + time);
+          gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + time + 0.12);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + time);
+          osc.stop(ctx.currentTime + time + 0.13);
+        });
+      } catch (_) {}
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
 </body>
 </html>
