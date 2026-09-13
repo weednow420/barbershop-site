@@ -1,402 +1,190 @@
 /**
- * L'ATELIER — Modern Hair Salon & Barbershop
- * Main JavaScript functionality
+ * ПРОСТАЯ ПАРИКМАХЕРСКАЯ — «КАК НА ЛИСТОЧКЕ»
+ * Логика тетрадного листочка и голубиной почты 🕊️
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initTelegramWebApp();
-  initNavbar();
-  initServiceTabs();
-  initGalleryFilter();
-  initGalleryModal();
-  initFaqAccordion();
-  initBookingModal();
-  initSmoothScroll();
+  initTelegram();
+  initPigeonBooking();
+  initAutoDate();
 });
 
-/* ==========================================================================
-   1. Header Scroll & Mobile Menu
-   ========================================================================== */
-function initNavbar() {
-  const header = document.querySelector('.header');
-  const burgerBtn = document.querySelector('.burger-btn');
-  const navMenu = document.querySelector('.nav-menu');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  // Add background on scroll
-  const handleScroll = () => {
-    if (window.scrollY > 40) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  };
-  window.addEventListener('scroll', handleScroll);
-  handleScroll();
-
-  // Burger Menu Toggle
-  if (burgerBtn && navMenu) {
-    burgerBtn.addEventListener('click', () => {
-      burgerBtn.classList.toggle('open');
-      navMenu.classList.toggle('open');
-      document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
-    });
-
-    // Close menu when clicking nav links
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        burgerBtn.classList.remove('open');
-        navMenu.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    });
-  }
-
-  // Active Link on Scroll (Scrollspy)
-  const sections = document.querySelectorAll('section[id]');
-  window.addEventListener('scroll', () => {
-    const scrollY = window.pageYOffset;
-    sections.forEach(current => {
-      const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 120;
-      const sectionId = current.getAttribute('id');
-      const targetLink = document.querySelector(`.nav-link[href*="${sectionId}"]`);
-
-      if (targetLink) {
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          targetLink.classList.add('active');
-        } else {
-          targetLink.classList.remove('active');
-        }
-      }
-    });
-  });
-}
-
-/* ==========================================================================
-   2. Services Tabs Filter
-   ========================================================================== */
-function initServiceTabs() {
-  const tabBtns = document.querySelectorAll('.services-tabs .tab-btn');
-  const serviceCards = document.querySelectorAll('.service-card');
-
-  if (!tabBtns.length || !serviceCards.length) return;
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from buttons
-      tabBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.getAttribute('data-filter');
-
-      serviceCards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          card.style.display = 'flex';
-          setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          }, 20);
-        } else {
-          card.style.display = 'none';
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(10px)';
-        }
-      });
-    });
-  });
-}
-
-/* ==========================================================================
-   3. Gallery Filter
-   ========================================================================== */
-function initGalleryFilter() {
-  const filterBtns = document.querySelectorAll('.gallery-filters .filter-btn');
-  const galleryItems = document.querySelectorAll('.gallery-item');
-
-  if (!filterBtns.length || !galleryItems.length) return;
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.getAttribute('data-filter');
-
-      galleryItems.forEach(item => {
-        const category = item.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          item.style.display = 'block';
-          setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'scale(1)';
-          }, 20);
-        } else {
-          item.style.display = 'none';
-          item.style.opacity = '0';
-          item.style.transform = 'scale(0.95)';
-        }
-      });
-    });
-  });
-}
-
-/* ==========================================================================
-   4. Gallery Lightbox Modal
-   ========================================================================== */
-function initGalleryModal() {
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  const lightboxModal = document.getElementById('lightboxModal');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxCaption = document.getElementById('lightboxCaption');
-  const lightboxClose = document.getElementById('lightboxClose');
-
-  if (!lightboxModal || !galleryItems.length) return;
-
-  galleryItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      const title = item.querySelector('.gallery-title');
-      const category = item.querySelector('.gallery-category');
-
-      if (img && lightboxImg) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || 'Работа салона';
-      }
-      if (lightboxCaption && title) {
-        const catText = category ? category.textContent + ' — ' : '';
-        lightboxCaption.textContent = catText + title.textContent;
-      }
-
-      lightboxModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  const closeLightbox = () => {
-    lightboxModal.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-
-  if (lightboxClose) {
-    lightboxClose.addEventListener('click', closeLightbox);
-  }
-
-  lightboxModal.addEventListener('click', (e) => {
-    if (e.target === lightboxModal) {
-      closeLightbox();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightboxModal.classList.contains('open')) {
-      closeLightbox();
-    }
-  });
-}
-
-/* ==========================================================================
-   5. FAQ Accordion
-   ========================================================================== */
-function initFaqAccordion() {
-  const faqItems = document.querySelectorAll('.faq-item');
-
-  faqItems.forEach(item => {
-    const header = item.querySelector('.faq-header');
-    if (!header) return;
-
-    header.addEventListener('click', () => {
-      const isOpen = item.classList.contains('active');
-
-      // Close all other items
-      faqItems.forEach(otherItem => {
-        if (otherItem !== item) {
-          otherItem.classList.remove('active');
-        }
-      });
-
-      // Toggle current
-      if (isOpen) {
-        item.classList.remove('active');
-      } else {
-        item.classList.add('active');
-      }
-    });
-  });
-}
-
-/* ==========================================================================
-   6. Booking Modal & Form Handling
-   ========================================================================== */
-function initBookingModal() {
-  const modal = document.getElementById('bookingModal');
-  const openBtns = document.querySelectorAll('.open-booking-modal');
-  const closeBtn = document.getElementById('closeBookingModal');
-  const bookingForm = document.getElementById('bookingForm');
-  const serviceSelect = document.getElementById('bookService');
-  const masterSelect = document.getElementById('bookMaster');
-  const successBox = document.getElementById('bookingSuccess');
-  const resetBtn = document.getElementById('bookingResetBtn');
-  const bookDateInput = document.getElementById('bookDate');
-
-  if (!modal) return;
-
-  // Set min date for booking to today
-  if (bookDateInput) {
-    const today = new Date().toISOString().split('T')[0];
-    bookDateInput.min = today;
-  }
-
-  // Open Modal
-  openBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const preSelectedService = btn.getAttribute('data-service');
-      const preSelectedMaster = btn.getAttribute('data-master');
-
-      if (preSelectedService && serviceSelect) {
-        serviceSelect.value = preSelectedService;
-      }
-      if (preSelectedMaster && masterSelect) {
-        masterSelect.value = preSelectedMaster;
-      }
-
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  // Close Modal Function
-  const closeModal = () => {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeModal);
-  }
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
-      closeModal();
-    }
-  });
-
-  // Handle Form Submission
-  if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('bookName').value.trim();
-      const phone = document.getElementById('bookPhone').value.trim();
-      const service = serviceSelect ? serviceSelect.options[serviceSelect.selectedIndex].text : '';
-      const master = masterSelect ? masterSelect.options[masterSelect.selectedIndex].text : '';
-      const date = document.getElementById('bookDate').value;
-      const time = document.getElementById('bookTime').value;
-
-      if (!name || !phone || !date || !time) {
-        alert('Пожалуйста, заполните все обязательные поля');
-        return;
-      }
-
-      // Fill summary in success box
-      const summaryElem = document.getElementById('bookingSummaryDetails');
-      if (summaryElem) {
-        summaryElem.innerHTML = `
-          <strong>Клиент:</strong> ${name}<br>
-          <strong>Телефон:</strong> ${phone}<br>
-          <strong>Услуга:</strong> ${service}<br>
-          <strong>Мастер:</strong> ${master}<br>
-          <strong>Дата и время:</strong> ${date} в ${time}
-        `;
-      }
-
-      // Display success message
-      bookingForm.style.display = 'none';
-      if (successBox) {
-        successBox.style.display = 'block';
-      }
-    });
-  }
-
-  // Reset booking form
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      bookingForm.reset();
-      bookingForm.style.display = 'flex';
-      if (successBox) {
-        successBox.style.display = 'none';
-      }
-      closeModal();
-    });
-  }
-}
-
-/* ==========================================================================
-   7. Smooth Scroll for in-page anchors
-   ========================================================================== */
-function initSmoothScroll() {
-  const scrollLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
-
-  scrollLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-
-      if (targetElement) {
-        e.preventDefault();
-        const headerOffset = 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-}
-
-/* ==========================================================================
-   8. Telegram Mini App Integration
-   ========================================================================== */
-function initTelegramWebApp() {
+// 1. Инициализация Telegram Mini App
+function initTelegram() {
   if (typeof window.Telegram !== 'undefined' && window.Telegram.WebApp) {
     const tg = window.Telegram.WebApp;
-    
-    // Notify Telegram that the Mini App is ready
     tg.ready();
     tg.expand();
 
-    // Autofill client name if user is in Telegram
+    // Автоподстановка имени из профиля Telegram
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      const user = tg.initDataUnsafe.user;
-      const nameInput = document.getElementById('bookName');
-      if (nameInput && !nameInput.value) {
-        const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ');
-        nameInput.value = fullName || user.username || '';
+      const u = tg.initDataUnsafe.user;
+      const nameField = document.getElementById('clientName');
+      if (nameField && !nameField.value) {
+        nameField.value = [u.first_name, u.last_name].filter(Boolean).join(' ') || u.username || '';
       }
     }
-
-    // Add haptic feedback to interactive buttons
-    const interactiveElements = document.querySelectorAll('.btn, .tab-btn, .filter-btn, .faq-header');
-    interactiveElements.forEach(el => {
-      el.addEventListener('click', () => {
-        if (tg.HapticFeedback) {
-          tg.HapticFeedback.impactOccurred('light');
-        }
-      });
-    });
-
-    console.log("[TMA] Telegram Mini App SDK успешно инициализирован.");
   }
+}
+
+// 2. Установка сегодняшней даты в штамп на листочке
+function initAutoDate() {
+  const dateStamp = document.getElementById('dateStamp');
+  const dateInput = document.getElementById('visitDate');
+
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+
+  if (dateStamp) {
+    dateStamp.textContent = `«${day}» / ${month} / ${year} г.`;
+  }
+  if (dateInput) {
+    dateInput.min = `${year}-${month}-${day}`;
+    dateInput.value = `${year}-${month}-${day}`;
+  }
+}
+
+// 3. Отправка записи голубем 🕊️
+function initPigeonBooking() {
+  const form = document.getElementById('pigeonForm');
+  const pigeonBtn = document.getElementById('pigeonBtn');
+  const stamp = document.getElementById('deliveredStamp');
+  const successCard = document.getElementById('successCard');
+  const summaryDetails = document.getElementById('summaryDetails');
+  const skyOverlay = document.getElementById('skyOverlay');
+
+  if (!form || !pigeonBtn) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('clientName').value.trim();
+    const phone = document.getElementById('clientPhone').value.trim();
+    const date = document.getElementById('visitDate').value;
+    const time = document.getElementById('visitTime').value;
+
+    // Сбор выбранных услуг
+    const checkedBoxes = document.querySelectorAll('input[name="services"]:checked');
+    const selectedServices = Array.from(checkedBoxes).map(cb => cb.value);
+
+    if (!name || !phone) {
+      alert('Черкните, пожалуйста, имя и телефончик на листочке!');
+      return;
+    }
+
+    if (selectedServices.length === 0) {
+      alert('Поставьте галочку хотя бы напротив одной услуги :)');
+      return;
+    }
+
+    // Блокируем кнопку на время полёта
+    pigeonBtn.disabled = true;
+    pigeonBtn.innerHTML = '<span>Голубь взлетает... 🕊️</span>';
+
+    // Telegram Haptic Feedback (вибрация смартфона)
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+    }
+
+    // Запуск анимации голубя
+    launchPigeon(skyOverlay, () => {
+      // По прилёту голубя
+      if (stamp) stamp.style.display = 'block';
+
+      if (summaryDetails) {
+        summaryDetails.innerHTML = `
+          <strong>Гость:</strong> ${escapeHtml(name)} (${escapeHtml(phone)})<br>
+          <strong>Что делаем:</strong> ${escapeHtml(selectedServices.join(', '))}<br>
+          <strong>Когда ждём:</strong> ${escapeHtml(date)} в ${escapeHtml(time)}
+        `;
+      }
+
+      if (successCard) successCard.style.display = 'block';
+
+      pigeonBtn.style.display = 'none';
+
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+
+      // Плавный скролл к подтверждению
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+}
+
+// 4. Отрисовка и полёт голубя через экран
+function launchPigeon(container, onComplete) {
+  if (!container) {
+    if (onComplete) onComplete();
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="pigeon-flight flying" id="animatedPigeon">
+      <svg viewBox="0 0 120 100" width="130" height="110" style="filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25));">
+        <!-- Тело голубя -->
+        <path d="M20,60 Q45,35 70,45 Q95,45 105,35 Q110,40 100,55 Q85,75 55,75 Q30,75 20,60 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+        <!-- Крыло взмахивающееся -->
+        <path d="M45,50 Q60,10 85,15 Q65,40 50,55 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="2">
+          <animateTransform attributeName="transform" type="rotate" values="0 50 55; -35 50 55; 0 50 55" dur="0.25s" repeatCount="indefinite"/>
+        </path>
+        <!-- Хвост -->
+        <path d="M10,65 L25,58 L22,70 Z" fill="#94a3b8"/>
+        <!-- Глаз -->
+        <circle cx="98" cy="42" r="2.5" fill="#1e293b"/>
+        <!-- Клюв -->
+        <polygon points="105,42 118,46 106,49" fill="#f59e0b"/>
+        <!-- Письмо в клюве -->
+        <g transform="translate(108, 46) rotate(15)">
+          <rect width="18" height="13" rx="2" fill="#fffdfa" stroke="#b91c1c" stroke-width="1.2"/>
+          <line x1="0" y1="0" x2="9" y2="7" stroke="#b91c1c" stroke-width="1"/>
+          <line x1="18" y1="0" x2="9" y2="7" stroke="#b91c1c" stroke-width="1"/>
+        </g>
+      </svg>
+    </div>
+  `;
+
+  // Звук хлопанья крыльев через Web Audio API
+  playFlapSound();
+
+  setTimeout(() => {
+    container.innerHTML = '';
+    if (onComplete) onComplete();
+  }, 2700);
+}
+
+// 5. Синтез легкого звукового эффекта шелеста / хлопанья крыльев
+function playFlapSound() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    
+    // 3 легких хлопка крыльев
+    [0, 0.25, 0.5, 0.75].forEach(time => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(140, ctx.currentTime + time);
+      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + time + 0.12);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime + time);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + time + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + time);
+      osc.stop(ctx.currentTime + time + 0.13);
+    });
+  } catch (_) {}
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

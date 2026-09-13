@@ -2,921 +2,282 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>L'ATELIER — Студия Стрижки и Стиля | Премиум парикмахерская & барбершоп</title>
-  <meta name="description" content="Премиальная студия стрижки и стиля L'ATELIER. Мужские и женские стрижки, авторское окрашивание, оформление бороды и премиальный уход в атмосфере уюта.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Парикмахерская — Запись на листочке</title>
+  <meta name="description" content="Обычная нормальная парикмахерская. Запишитесь на листочке и отправьте голубем!">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-  <!-- ==================== HEADER ==================== -->
+  <!-- Контейнер для анимации летящего голубя -->
+  <div id="skyOverlay" class="sky-overlay"></div>
+
+  <!-- ШАПКА -->
   <header class="header">
-    <div class="container header-container">
-      <a href="#" class="logo">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="6" cy="6" r="3"></circle>
-          <circle cx="6" cy="18" r="3"></circle>
-          <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
-          <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
-          <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
-        </svg>
-        <div class="logo-text">
-          <span class="logo-title">L'ATELIER</span>
-          <span class="logo-subtitle">Hair Studio & Barber</span>
+    <div class="container header-inner">
+      <div class="logo-badge">
+        <span style="font-size: 1.8rem;">✂️</span>
+        <div>
+          <h1 class="logo-title">ПАРИКМАХЕРСКАЯ</h1>
         </div>
-      </a>
-
-      <nav class="nav-menu">
-        <a href="#about" class="nav-link">О студии</a>
-        <a href="#services" class="nav-link">Услуги и цены</a>
-        <a href="#masters" class="nav-link">Мастера</a>
-        <a href="#gallery" class="nav-link">Галерея</a>
-        <a href="#reviews" class="nav-link">Отзывы</a>
-        <a href="#faq" class="nav-link">Вопросы</a>
-        <a href="#contacts" class="nav-link">Контакты</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="tel:+74951234567" class="header-phone">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
-          +7 (495) 123-45-67
-        </a>
-        <a href="#bookingModal" class="btn btn-primary open-booking-modal">Записаться</a>
-        <button class="burger-btn" aria-label="Открыть мобильное меню">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+      </div>
+      <p class="logo-sub">У нас всё просто: подстригся и пошёл. Без пафоса и кофе за 500 рублей.</p>
+      
+      <div class="header-contacts-chip">
+        <span><span class="status-dot"></span>Мастер на месте, работаем с 10:00 до 20:00</span>
+        <span>•</span>
+        <a href="tel:+74951234567">📞 +7 (495) 123-45-67</a>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- ==================== HERO SECTION ==================== -->
+    <!-- ГЛАВНЫЙ БЛОК: ТЕТРАДНЫЙ ЛИСТОК ЗАПИСИ -->
     <section class="hero-section">
-      <div class="hero-backdrop"></div>
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <div class="status-pill">
-            <span class="status-dot"></span>
-            <span>Сегодня открыто до 22:00 • ул. Большая Полянка, 14</span>
+      <div class="container">
+        
+        <div class="hero-intro">
+          <h2 class="hero-heading">Запись на сегодня и завтра</h2>
+          <p class="hero-subheading">Заполните строчки на листочке ниже — и отправляйте голубем!</p>
+        </div>
+
+        <div class="sheet-wrapper">
+          <!-- Скотч на уголках -->
+          <div class="tape tape-top-left"></div>
+          <div class="tape tape-top-right"></div>
+
+          <!-- Сам тетрадный листок -->
+          <div class="notepad-sheet">
+            
+            <!-- Печать Доставлено голубем (появляется после отправки) -->
+            <div id="deliveredStamp" class="delivered-stamp">
+              <div class="stamp-title">
+                <span>🕊️ ДОСТАВЛЕНО!</span>
+              </div>
+              <div class="stamp-sub">Запись в журнале у мастера</div>
+            </div>
+
+            <div class="notepad-header">
+              <span class="sheet-title">Листок для записи ✏️</span>
+              <span id="dateStamp" class="sheet-date-stamp">«13» / 09 / 2026 г.</span>
+            </div>
+
+            <form id="pigeonForm" class="paper-form">
+              <!-- Имя -->
+              <div class="paper-line-group">
+                <label for="clientName" class="paper-label">1. Как вас зовут?</label>
+                <input type="text" id="clientName" class="paper-input" placeholder="Например: дядя Саша или Аня" required>
+              </div>
+
+              <!-- Телефон -->
+              <div class="paper-line-group">
+                <label for="clientPhone" class="paper-label">2. Номер телефона (чтобы не потерялись):</label>
+                <input type="tel" id="clientPhone" class="paper-input" placeholder="+7 (___) ___-__-__" required>
+              </div>
+
+              <!-- Чекбоксы услуг -->
+              <div class="paper-line-group">
+                <span class="paper-label">3. Что будем делать? (отметьте галочкой):</span>
+                <div class="services-checklist">
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Мужская стрижка (обычная)" checked>
+                    <span class="service-title-text">Мужская стрижка (обычная)</span>
+                    <span class="service-price-tag">700 ₽</span>
+                  </label>
+
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Стрижка под насадку">
+                    <span class="service-title-text">Под машинку (быстро)</span>
+                    <span class="service-price-tag">450 ₽</span>
+                  </label>
+
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Женская стрижка / кончики">
+                    <span class="service-title-text">Женская стрижка (кончики/каре)</span>
+                    <span class="service-price-tag">900 ₽</span>
+                  </label>
+
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Подравнять чёлку">
+                    <span class="service-title-text">Подравнять чёлку</span>
+                    <span class="service-price-tag">300 ₽</span>
+                  </label>
+
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Оформить бороду">
+                    <span class="service-title-text">Борода (убрать лишнее)</span>
+                    <span class="service-price-tag">500 ₽</span>
+                  </label>
+
+                  <label class="checkbox-hand">
+                    <input type="checkbox" name="services" value="Помыть голову с массажем">
+                    <span class="service-title-text">Помыть голову с массажем</span>
+                    <span class="service-price-tag">200 ₽</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Дата и время -->
+              <div class="paper-row">
+                <div class="paper-line-group">
+                  <label for="visitDate" class="paper-label">4. В какой день?</label>
+                  <input type="date" id="visitDate" class="paper-input" required>
+                </div>
+                <div class="paper-line-group">
+                  <label for="visitTime" class="paper-label">5. Во сколько ждём?</label>
+                  <select id="visitTime" class="paper-input" style="cursor: pointer;" required>
+                    <option value="10:30">10:30 (утречком)</option>
+                    <option value="12:00">12:00 (в обед)</option>
+                    <option value="14:00" selected>14:00 (днем)</option>
+                    <option value="16:30">16:30 (после работы)</option>
+                    <option value="18:00">18:00 (вечерком)</option>
+                    <option value="19:30">19:30 (крайнее время)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Кнопка: Отправить голубем -->
+              <div class="pigeon-btn-container">
+                <button type="submit" id="pigeonBtn" class="btn-pigeon">
+                  <span class="pigeon-icon">🕊️</span>
+                  <span>Отправить голубем</span>
+                </button>
+                <p class="pigeon-note">Голубь полетит прямо мастеру в парикмахерскую. Запись железная!</p>
+              </div>
+
+              <!-- Блок после доставки -->
+              <div id="successCard" class="success-card">
+                <h4>Голубь прилетел, записка в руках мастера! 🕊️</h4>
+                <p style="margin-bottom: 12px;">Спасибо, мы вас записали. Приходите ко времени, чай с печеньем уже наготове.</p>
+                <div id="summaryDetails" style="font-family: var(--font-hand); font-size: 1.45rem; color: #1e3a8a; background: #fff; padding: 12px; border-radius: 6px; border: 1px dashed #86efac; text-align: left; line-height: 1.5;"></div>
+              </div>
+
+            </form>
           </div>
-          <h1 class="hero-title">
-            Искусство стиля, созданное для <span class="highlight">вас</span>.
-          </h1>
-          <p class="hero-lead">
-            Премиальная парикмахерская студия и барбершоп, где безупречная техника стрижки сочетается с комфортной клубной атмосферой и индивидуальным подходом.
-          </p>
-          <div class="hero-btns">
-            <a href="#bookingModal" class="btn btn-primary open-booking-modal">
-              Онлайн-запись
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ЧЕСТНЫЙ ПРАЙС-ЛИСТ -->
+    <section class="price-section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Честные цены на всё</h2>
+          <p class="section-desc">Никаких скрытых доплат за «шампунь премиум» или сушку феном.</p>
+        </div>
+
+        <div class="menu-paper" style="max-width: 680px; margin: 0 auto;">
+          <div class="price-list">
+            <div class="price-item">
+              <span class="price-name">Мужская классическая стрижка</span>
+              <span class="price-dots"></span>
+              <span class="price-value">700 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Стрижка машинкой (1-2 насадки)</span>
+              <span class="price-dots"></span>
+              <span class="price-value">450 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Женская стрижка (длина, каре, форма)</span>
+              <span class="price-dots"></span>
+              <span class="price-value">900 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Подравнять чёлку</span>
+              <span class="price-dots"></span>
+              <span class="price-value">300 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Оформление бороды и усов</span>
+              <span class="price-dots"></span>
+              <span class="price-value">500 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Мытьё головы с массажем</span>
+              <span class="price-dots"></span>
+              <span class="price-value">200 ₽</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Чай, растворимый кофе и конфета «Барбарис»</span>
+              <span class="price-dots"></span>
+              <span class="price-value price-free">0 ₽ (Бесплатно)</span>
+            </div>
+
+            <div class="price-item">
+              <span class="price-name">Душевный разговор о жизни</span>
+              <span class="price-dots"></span>
+              <span class="price-value price-free">Бесценно</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПОЧЕМУ У НАС ХОРОШО -->
+    <section class="why-section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Почему соседи ходят к нам</h2>
+          <p class="section-desc">Потому что всё просто, по-человечески и без выкрутасов.</p>
+        </div>
+
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">🧼</div>
+            <h3>Чистый инструмент</h3>
+            <p>Ножницы и насадки дезинфицируем после каждого клиента без исключений. Всё стерильно и безопасно.</p>
+          </div>
+
+          <div class="why-card">
+            <div class="why-icon">👂</div>
+            <h3>Слышим, что вы просите</h3>
+            <p>Сказали «убрать два сантиметра» — уберём ровно два, а не сделаем каре под ноль. Мастера с руками из плеч.</p>
+          </div>
+
+          <div class="why-card">
+            <div class="why-icon">🍬</div>
+            <h3>Уют и карамельки</h3>
+            <p>Всегда есть свежий чай, удобный диванчик, старые журналы и вазочка с карамелью. Никакого стресса.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- КОНТАКТЫ И КАК НАЙТИ -->
+    <section class="contacts-section">
+      <div class="container">
+        <div class="contacts-box">
+          <h3>📍 Где нас искать:</h3>
+          <p>Вход со двора, зеленая железная дверь рядом с булочной. Вывеска «ПАРИКМАХЕРСКАЯ».</p>
+          <p style="font-size: 1.25rem; color: #4b5563;">Работаем каждый день: <strong>с 10:00 до 20:00</strong> (в воскресенье до 18:00)</p>
+          
+          <div class="contacts-links">
+            <a href="tel:+74951234567" class="btn-contact">
+              <span>📞 Позвонить: +7 (495) 123-45-67</span>
             </a>
-            <a href="#services" class="btn btn-secondary">Смотреть прайс</a>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-item">
-              <span class="stat-number">9+</span>
-              <span class="stat-label">Лет опыта</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">18 500+</span>
-              <span class="stat-label">Довольных клиентов</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">4.9 ★</span>
-              <span class="stat-label">Рейтинг Яндекс & 2ГИС</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="hero-card-stack">
-            <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&q=80" alt="Стрижка в барбершопе" class="hero-img-main">
-            <div class="hero-floating-badge">
-              <div class="badge-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-              </div>
-              <div class="badge-text">
-                <strong>Премиум сервис</strong>
-                <span>Кофе, напитки & релакс</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== FEATURES SECTION ==================== -->
-    <section class="section features-section">
-      <div class="container">
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon-box">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-            </div>
-            <h3 class="feature-title">Стерильность 100%</h3>
-            <p class="feature-desc">Многоступенчатая стерилизация инструмента в сухожаровом шкафу и одноразовые расходные материалы.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon-box">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-            </div>
-            <h3 class="feature-title">Топ-мастера</h3>
-            <p class="feature-desc">Стилисты и барберы международного уровня с регулярным повышением квалификации в Лондоне и Милане.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon-box">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-            </div>
-            <h3 class="feature-title">Косметика LUXE</h3>
-            <p class="feature-desc">Работаем исключительно на профессиональных органических линейках Davines, Keune, Proraso и Reuzel.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon-box">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                <line x1="6" y1="1" x2="6" y2="4"></line>
-                <line x1="10" y1="1" x2="10" y2="4"></line>
-                <line x1="14" y1="1" x2="14" y2="4"></line>
-              </svg>
-            </div>
-            <h3 class="feature-title">Зона отдыха</h3>
-            <p class="feature-desc">Свежесваренный кофе, авторский чай, виски-бар, PlayStation и приятная музыка для полного расслабления.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== ABOUT SECTION ==================== -->
-    <section id="about" class="section about-section">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-images-col">
-            <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=800&q=80" alt="Интерьер студии L'Atelier" class="about-image-primary">
-            <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=600&q=80" alt="Процесс стрижки" class="about-image-secondary">
-          </div>
-
-          <div class="about-content-col">
-            <span class="subtitle-badge">О студии</span>
-            <h2 class="section-title">Место, где стрижка становится искусством</h2>
-            <p class="about-text">
-              Студия <strong>L'ATELIER</strong> была создана как пространство, где внимание к деталям и уважение ко времени гостя стоят на первом месте. Мы объединили лучшие традиции классического барберинга и современные тренды стилистики для мужчин и женщин.
-            </p>
-            <p class="about-text">
-              Мы не просто делаем стрижки — мы подбираем образ с учетом формы лица, структуры волос, образа жизни и вашего персонального стиля.
-            </p>
-
-            <div class="about-bullets">
-              <div class="bullet-item">
-                <span class="bullet-check">✓</span>
-                <span>Индивидуальные консультации мастера перед каждой процедурой</span>
-              </div>
-              <div class="bullet-item">
-                <span class="bullet-check">✓</span>
-                <span>Мытье головы с массажем и ароматерапевтическими средствами</span>
-              </div>
-              <div class="bullet-item">
-                <span class="bullet-check">✓</span>
-                <span>Рекомендации по домашнему уходу и укладке</span>
-              </div>
-            </div>
-
-            <a href="#bookingModal" class="btn btn-outline open-booking-modal">Познакомиться лично</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== SERVICES SECTION ==================== -->
-    <section id="services" class="section services-section">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="subtitle-badge">Прайс-лист</span>
-          <h2 class="section-title">Услуги студии</h2>
-          <p class="section-description">Все цены фиксированы и включают консультацию, мытье головы профессиональными средствами и укладку.</p>
-        </div>
-
-        <!-- Filter Tabs -->
-        <div class="services-tabs">
-          <button class="tab-btn active" data-filter="all">Все услуги</button>
-          <button class="tab-btn" data-filter="men">Мужской зал & Барбер</button>
-          <button class="tab-btn" data-filter="women">Женский зал</button>
-          <button class="tab-btn" data-filter="color">Окрашивание</button>
-          <button class="tab-btn" data-filter="care">Уход & SPA</button>
-        </div>
-
-        <!-- Services Grid -->
-        <div class="services-grid">
-          <!-- Men Services -->
-          <div class="service-card" data-category="men">
-            <div class="service-info">
-              <h3 class="service-name">Мужская классическая стрижка</h3>
-              <p class="service-desc">Мытье головы, подбор формы, стрижка ножницами и машинкой, укладка премиальной пастой или глиной.</p>
-              <span class="service-duration">⏱ 50 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">2 500 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Мужская классическая стрижка">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="men">
-            <div class="service-info">
-              <h3 class="service-name">Моделирование и стрижка бороды</h3>
-              <p class="service-desc">Распаривание горячим полотенцем с маслами, четкие контуры опасной бритвой, стрижка и увлажнение бальзамом.</p>
-              <span class="service-duration">⏱ 40 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">1 800 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Моделирование и стрижка бороды">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="men">
-            <div class="service-info">
-              <h3 class="service-name">Комплекс: Стрижка + Борода</h3>
-              <p class="service-desc">Полное преображение: стильная стрижка, моделирование бороды с распариванием и премиальным уходом.</p>
-              <span class="service-duration">⏱ 80 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">3 800 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Комплекс: Стрижка + Борода">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="men">
-            <div class="service-info">
-              <h3 class="service-name">Королевское бритье</h3>
-              <p class="service-desc">Традиционный ритуал с двойным горячим компрессом, пеной ручного взбивания и открытым лезвием.</p>
-              <span class="service-duration">⏱ 45 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">2 200 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Королевское бритье">Записаться</a>
-            </div>
-          </div>
-
-          <!-- Women Services -->
-          <div class="service-card" data-category="women">
-            <div class="service-info">
-              <h3 class="service-name">Женская стрижка & стайлинг</h3>
-              <p class="service-desc">Консультация топ-стилиста, спа-мытье головы, точная геометрия среза и стойкая объемная укладка.</p>
-              <span class="service-duration">⏱ 60-80 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">3 500 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Женская стрижка & стайлинг">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="women">
-            <div class="service-info">
-              <h3 class="service-name">Вечерняя / Коктейльная укладка</h3>
-              <p class="service-desc">Элегантные голливудские волны, текстурные локоны или собранная вечерняя прическа для важных событий.</p>
-              <span class="service-duration">⏱ 60 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">3 200 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Вечерняя / Коктейльная укладка">Записаться</a>
-            </div>
-          </div>
-
-          <!-- Color Services -->
-          <div class="service-card" data-category="color">
-            <div class="service-info">
-              <h3 class="service-name">Сложное окрашивание (Airtouch / Balayage)</h3>
-              <p class="service-desc">Создание плавных переходов, глубокого цвета и визуального объема. Включает тонирование и защиту волос.</p>
-              <span class="service-duration">⏱ 180-240 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">от 8 500 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Сложное окрашивание (Airtouch / Balayage)">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="color">
-            <div class="service-info">
-              <h3 class="service-name">Тонирование волос & Блеск</h3>
-              <p class="service-desc">Безаммиачное тонирование красителем Davines, насыщение оттенка и зеркальный глянец волос.</p>
-              <span class="service-duration">⏱ 70 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">4 500 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Тонирование волос & Блеск">Записаться</a>
-            </div>
-          </div>
-
-          <!-- Care & SPA Services -->
-          <div class="service-card" data-category="care">
-            <div class="service-info">
-              <h3 class="service-name">SPA-детокс кожи головы & Пилинг</h3>
-              <p class="service-desc">Глубокое очищение, стимулирующий массаж, нормализация себорегуляции и укрепление волосяных фолликулов.</p>
-              <span class="service-duration">⏱ 45 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">2 800 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="SPA-детокс кожи головы & Пилинг">Записаться</a>
-            </div>
-          </div>
-
-          <div class="service-card" data-category="care">
-            <div class="service-info">
-              <h3 class="service-name">Молекулярное восстановление волос</h3>
-              <p class="service-desc">Интенсивный уход для поврежденных волос. Восстанавливает кератиновые связи, придает мягкость и шелковистость.</p>
-              <span class="service-duration">⏱ 60 мин</span>
-            </div>
-            <div class="service-meta-col">
-              <span class="service-price">4 200 ₽</span>
-              <a href="#bookingModal" class="btn btn-sm btn-outline open-booking-modal" data-service="Молекулярное восстановление волос">Записаться</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== MASTERS SECTION ==================== -->
-    <section id="masters" class="section masters-section">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="subtitle-badge">Команда</span>
-          <h2 class="section-title">Наши топ-мастера</h2>
-          <p class="section-description">Профессионалы, влюбленные в свое дело, с безупречным чувством стиля и многолетним стажем.</p>
-        </div>
-
-        <div class="masters-grid">
-          <!-- Master 1 -->
-          <div class="master-card">
-            <div class="master-photo-wrap">
-              <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=600&q=80" alt="Александр Воронов" class="master-photo">
-              <span class="master-experience-badge">Опыт 8 лет</span>
-            </div>
-            <div class="master-body">
-              <span class="master-role">Шеф-барбер</span>
-              <h3 class="master-name">Александр Воронов</h3>
-              <p class="master-bio">Мастер классических форм, безупречных фейдов и королевского бритья. Победитель Barber Battle Russia.</p>
-              <a href="#bookingModal" class="btn btn-outline open-booking-modal" data-master="Александр Воронов (Шеф-барбер)">Записаться к Александру</a>
-            </div>
-          </div>
-
-          <!-- Master 2 -->
-          <div class="master-card">
-            <div class="master-photo-wrap">
-              <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=600&q=80" alt="Елена Романова" class="master-photo">
-              <span class="master-experience-badge">Опыт 10 лет</span>
-            </div>
-            <div class="master-body">
-              <span class="master-role">Арт-директор & Колорист</span>
-              <h3 class="master-name">Елена Романова</h3>
-              <p class="master-bio">Эксперт сложных техник окрашивания (Airtouch, Shatush) и архитектурных женских стрижек Vidal Sassoon.</p>
-              <a href="#bookingModal" class="btn btn-outline open-booking-modal" data-master="Елена Романова (Арт-директор & Колорист)">Записаться к Елене</a>
-            </div>
-          </div>
-
-          <!-- Master 3 -->
-          <div class="master-card">
-            <div class="master-photo-wrap">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Дмитрий Соколов" class="master-photo">
-              <span class="master-experience-badge">Опыт 6 лет</span>
-            </div>
-            <div class="master-body">
-              <span class="master-role">Топ-стилист</span>
-              <h3 class="master-name">Дмитрий Соколов</h3>
-              <p class="master-bio">Специалист по удлиненным текстурным мужским стрижкам, моделированию густых бород и уходу за волосами.</p>
-              <a href="#bookingModal" class="btn btn-outline open-booking-modal" data-master="Дмитрий Соколов (Топ-стилист)">Записаться к Дмитрию</a>
-            </div>
-          </div>
-
-          <!-- Master 4 -->
-          <div class="master-card">
-            <div class="master-photo-wrap">
-              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80" alt="Анна Мельникова" class="master-photo">
-              <span class="master-experience-badge">Опыт 7 лет</span>
-            </div>
-            <div class="master-body">
-              <span class="master-role">Стилист по волосам & SPA</span>
-              <h3 class="master-name">Анна Мельникова</h3>
-              <p class="master-bio">Создатель роскошных вечерних укладок, эксперт лечебных ритуалов для волос и ревитализации кожи головы.</p>
-              <a href="#bookingModal" class="btn btn-outline open-booking-modal" data-master="Анна Мельникова (Стилист по волосам & SPA)">Записаться к Анне</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== GALLERY SECTION ==================== -->
-    <section id="gallery" class="section gallery-section">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="subtitle-badge">Портфолио</span>
-          <h2 class="section-title">Галерея наших работ</h2>
-          <p class="section-description">Каждая стрижка и окрашивание — индивидуальная работа с учетом текстуры волос и характера гостя.</p>
-        </div>
-
-        <div class="gallery-filters">
-          <button class="filter-btn active" data-filter="all">Все работы</button>
-          <button class="filter-btn" data-filter="men">Мужские стрижки</button>
-          <button class="filter-btn" data-filter="beard">Борода & Усы</button>
-          <button class="filter-btn" data-filter="women">Женские стрижки</button>
-          <button class="filter-btn" data-filter="color">Окрашивание</button>
-        </div>
-
-        <div class="gallery-grid">
-          <!-- Item 1 -->
-          <div class="gallery-item" data-category="men">
-            <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=700&q=80" alt="Skin Fade & Crop" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Мужская стрижка</span>
-              <h4 class="gallery-title">Текстурный кроп & Skin Fade</h4>
-            </div>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="gallery-item" data-category="women">
-            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=80" alt="Каре и укладка" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Женский зал</span>
-              <h4 class="gallery-title">Градуированное каре со стайлингом</h4>
-            </div>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="gallery-item" data-category="beard">
-            <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=700&q=80" alt="Моделирование бороды" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Борода & Усы</span>
-              <h4 class="gallery-title">Четкая геометрия бороды</h4>
-            </div>
-          </div>
-
-          <!-- Item 4 -->
-          <div class="gallery-item" data-category="color">
-            <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=700&q=80" alt="Сложное окрашивание" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Окрашивание</span>
-              <h4 class="gallery-title">Холодный блонд в технике Airtouch</h4>
-            </div>
-          </div>
-
-          <!-- Item 5 -->
-          <div class="gallery-item" data-category="men">
-            <img src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=700&q=80" alt="Классический пробор" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Мужская стрижка</span>
-              <h4 class="gallery-title">Executive Side Part</h4>
-            </div>
-          </div>
-
-          <!-- Item 6 -->
-          <div class="gallery-item" data-category="color">
-            <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?auto=format&fit=crop&w=700&q=80" alt="Медный балаяж" class="gallery-img">
-            <div class="gallery-overlay">
-              <span class="gallery-category">Окрашивание</span>
-              <h4 class="gallery-title">Медный глянец & Мягкие волны</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== REVIEWS SECTION ==================== -->
-    <section id="reviews" class="section reviews-section">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="subtitle-badge">Отзывы</span>
-          <h2 class="section-title">Что говорят наши гости</h2>
-          <p class="section-description">Мы ценим доверие каждого клиента. Средняя оценка на независимых сервисах — 4.9 из 5.0.</p>
-        </div>
-
-        <div class="reviews-grid">
-          <!-- Review 1 -->
-          <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                «Хожу к Александру уже больше двух лет. Ни в одном другом месте мне не делали такой идеальный фейд. Отдельный респект за атмосферу, отличный кофе и всегда идеальную чистоту!»
-              </p>
-            </div>
-            <div class="review-author">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Михаил Кузнецов" class="author-avatar">
-              <div class="author-info">
-                <h4>Михаил Кузнецов</h4>
-                <span>Яндекс.Карты • 3 дня назад</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Review 2 -->
-          <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                «Делала сложное окрашивание у Елены — результат превзошел все ожидания! Цвет получился глубокий, переливающийся, а волосы после ухода стали невероятно мягкими и живыми. Спасибо огромное!»
-              </p>
-            </div>
-            <div class="review-author">
-              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" alt="Виктория Белова" class="author-avatar">
-              <div class="author-info">
-                <h4>Виктория Белова</h4>
-                <span>Google Reviews • 1 неделю назад</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Review 3 -->
-          <div class="review-card">
-            <div>
-              <div class="review-stars">★★★★★</div>
-              <p class="review-text">
-                «Очень стильный интерьер, приятная ненавязчивая музыка и высокий сервис с порога. Был на комплексе «Стрижка + Борода» у Дмитрия. Мастер подобрал форму бороды под овал лица идеально!»
-              </p>
-            </div>
-            <div class="review-author">
-              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Артем Новиков" class="author-avatar">
-              <div class="author-info">
-                <h4>Артем Новиков</h4>
-                <span>2ГИС • 2 недели назад</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== FAQ SECTION ==================== -->
-    <section id="faq" class="section faq-section">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="subtitle-badge">Частые вопросы</span>
-          <h2 class="section-title">Всё, что важно знать перед визитом</h2>
-        </div>
-
-        <div class="faq-list">
-          <div class="faq-item active">
-            <button class="faq-header">
-              <span>Нужно ли записываться заранее или можно прийти без записи?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-body">
-              Мы рекомендуем записываться заранее через онлайн-форму на сайте или по телефону, чтобы гарантировать удобное для вас время и выбор любимого мастера. Но если у нас есть свободное окно, мы с удовольствием примем вас без предварительной записи.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-header">
-              <span>Какую косметику и средства вы используете в работе?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-body">
-              Мы работаем исключительно на сертифицированной профессиональной косметике премиум-класса: Davines (Италия), Keune (Нидерланды), Proraso (Италия) и Reuzel (Нидерланды). Все продукты гипоаллергенны и не содержат сульфатов.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-header">
-              <span>Что входит в стоимость стрижки?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-body">
-              В стоимость любой стрижки включена подробная консультация мастера, двойное мытье головы с массажем и профессиональными средствами, сама стрижка, окантовка, сушка и укладка премиальным стайлингом с рекомендациями по домашнему уходу.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-header">
-              <span>Есть ли рядом с салоном парковка?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-body">
-              Да, прямо перед входом в студию есть городская парковка, а также мы предоставляем нашим гостям бесплатные парковочные места на охраняемой закрытой территории по предварительному звонку администратору.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-header">
-              <span>Как происходит стерилизация инструментов?</span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-body">
-              Безопасность наших гостей — главный приоритет. Металлические инструменты проходят 3 этапа очистки: дезинфекция в спецрастворе, ультразвуковая ванна и термообработка в медицинском сухожаре. Крафт-пакет со стерильным инструментом вскрывается прямо при вас.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CTA SECTION ==================== -->
-    <section class="cta-section">
-      <div class="container">
-        <div class="cta-box">
-          <span class="subtitle-badge">Онлайн-бронирование</span>
-          <h2 class="section-title">Готовы создать свой идеальный образ?</h2>
-          <p>Выберите удобный день и время. Администратор свяжется с вами для подтверждения бронирования за 1 минуту.</p>
-          <a href="#bookingModal" class="btn btn-primary open-booking-modal">
-            Записаться в салон прямо сейчас
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CONTACTS SECTION ==================== -->
-    <section id="contacts" class="section contacts-section">
-      <div class="container">
-        <div class="contacts-grid">
-          <div class="contacts-info-col">
-            <span class="subtitle-badge">Контакты</span>
-            <h2 class="section-title">Ждем вас в гости</h2>
-            <p class="section-description" style="margin-bottom: 30px;">
-              Уютная студия в историческом центре города с чашкой ароматного кофе или бокалом напитка.
-            </p>
-
-            <div class="contact-info-list">
-              <div class="contact-card-item">
-                <div class="contact-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                  </svg>
-                </div>
-                <div class="contact-details">
-                  <h4>Адрес студии</h4>
-                  <p>г. Москва, ул. Большая Полянка, д. 14, стр. 2<br><span style="color: var(--color-primary); font-size: 0.84rem;">м. Полянка (3 мин пешком)</span></p>
-                </div>
-              </div>
-
-              <div class="contact-card-item">
-                <div class="contact-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                </div>
-                <div class="contact-details">
-                  <h4>График работы</h4>
-                  <p>Ежедневно с 10:00 до 22:00<br>Без перерывов и выходных</p>
-                </div>
-              </div>
-
-              <div class="contact-card-item">
-                <div class="contact-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                </div>
-                <div class="contact-details">
-                  <h4>Телефон & WhatsApp</h4>
-                  <p><a href="tel:+74951234567" style="color: var(--text-main); font-weight: 600;">+7 (495) 123-45-67</a><br>
-                  <a href="mailto:info@latelier-hair.ru" style="color: var(--text-muted);">info@latelier-hair.ru</a></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="social-links">
-              <a href="#" class="social-btn" aria-label="Telegram" title="Telegram">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-              </a>
-              <a href="#" class="social-btn" aria-label="WhatsApp" title="WhatsApp">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                </svg>
-              </a>
-              <a href="#" class="social-btn" aria-label="VKontakte" title="VK">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.785 17.5c-5.727 0-9.002-3.924-9.138-10.45h2.89c.094 4.79 2.203 6.817 3.873 7.234V7.05h2.722v4.133c1.666-.18 3.393-2.057 3.985-4.133h2.72c-.461 2.578-2.355 4.455-3.69 5.234 1.335.626 3.447 2.274 4.225 5.216h-2.996c-.607-1.895-2.127-3.364-4.138-3.565V17.5h-.453z"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="contacts-map-col">
-            <div class="map-card">
-              <div class="map-placeholder"></div>
-              <div class="map-overlay-box">
-                <svg class="map-pin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <h4 style="font-size: 1.1rem; color: #fff; margin-bottom: 6px;">L'ATELIER Hair Studio</h4>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">ул. Большая Полянка, 14</p>
-                <a href="https://maps.yandex.ru" target="_blank" rel="noopener" class="btn btn-sm btn-primary">Построить маршрут</a>
-              </div>
-            </div>
+            <a href="https://t.me/Project_Terminal_bot" class="btn-contact">
+              <span>✈️ Наш Telegram</span>
+            </a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ==================== FOOTER ==================== -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-top">
-        <div class="footer-col">
-          <a href="#" class="logo" style="margin-bottom: 14px;">
-            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="6" cy="6" r="3"></circle>
-              <circle cx="6" cy="18" r="3"></circle>
-              <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
-              <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
-              <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
-            </svg>
-            <div class="logo-text">
-              <span class="logo-title">L'ATELIER</span>
-              <span class="logo-subtitle">Hair Studio & Barber</span>
-            </div>
-          </a>
-          <p class="footer-text">
-            Пространство безупречного стиля и премиального сервиса в самом сердце Москвы.
-          </p>
-        </div>
-
-        <div class="footer-col">
-          <h5>Навигация</h5>
-          <div class="footer-links">
-            <a href="#about" class="footer-link">О студии</a>
-            <a href="#services" class="footer-link">Услуги и прайс</a>
-            <a href="#masters" class="footer-link">Команда мастеров</a>
-            <a href="#gallery" class="footer-link">Портфолио</a>
-            <a href="#reviews" class="footer-link">Отзывы клиентов</a>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h5>Услуги</h5>
-          <div class="footer-links">
-            <a href="#services" class="footer-link">Мужские стрижки</a>
-            <a href="#services" class="footer-link">Моделирование бороды</a>
-            <a href="#services" class="footer-link">Женские стрижки & стиль</a>
-            <a href="#services" class="footer-link">Сложное окрашивание</a>
-            <a href="#services" class="footer-link">Спа-уход и детокс</a>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h5>Режим работы & адрес</h5>
-          <p class="footer-text" style="margin-top: 0;">
-            Пн — Вс: 10:00 — 22:00<br>
-            Москва, ул. Большая Полянка, 14<br>
-            Тел: +7 (495) 123-45-67
-          </p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>© 2026 Студия стиля и стрижки «L'ATELIER». Все права защищены.</span>
-        <span>Дизайн и разработка премиум-сайта</span>
-      </div>
+      <p>© 2026 Простая парикмахерская. Запись на листочке работает безотказно 🕊️</p>
     </div>
   </footer>
-
-  <!-- ==================== MOBILE FLOATING CTA ==================== -->
-  <div class="mobile-sticky-cta">
-    <a href="#bookingModal" class="btn btn-primary open-booking-modal" style="width: 100%; box-shadow: 0 4px 25px rgba(212, 175, 55, 0.4);">
-      Записаться онлайн
-    </a>
-  </div>
-
-  <!-- ==================== BOOKING MODAL ==================== -->
-  <div id="bookingModal" class="modal-backdrop">
-    <div class="modal-window">
-      <div class="modal-header">
-        <h3 class="modal-title">Онлайн-запись</h3>
-        <button id="closeBookingModal" class="modal-close-btn" aria-label="Закрыть модальное окно">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <form id="bookingForm" class="booking-form">
-          <div class="form-group">
-            <label for="bookService" class="form-label">Выберите услугу</label>
-            <select id="bookService" class="form-control" required>
-              <option value="Мужская классическая стрижка">Мужская классическая стрижка — 2 500 ₽</option>
-              <option value="Моделирование и стрижка бороды">Моделирование и стрижка бороды — 1 800 ₽</option>
-              <option value="Комплекс: Стрижка + Борода">Комплекс: Стрижка + Борода — 3 800 ₽</option>
-              <option value="Королевское бритье">Королевское бритье — 2 200 ₽</option>
-              <option value="Женская стрижка & стайлинг">Женская стрижка & стайлинг — 3 500 ₽</option>
-              <option value="Вечерняя / Коктейльная укладка">Вечерняя / Коктейльная укладка — 3 200 ₽</option>
-              <option value="Сложное окрашивание (Airtouch / Balayage)">Сложное окрашивание (Airtouch / Balayage) — от 8 500 ₽</option>
-              <option value="Тонирование волос & Блеск">Тонирование волос & Блеск — 4 500 ₽</option>
-              <option value="SPA-детокс кожи головы & Пилинг">SPA-детокс кожи головы & Пилинг — 2 800 ₽</option>
-              <option value="Молекулярное восстановление волос">Молекулярное восстановление волос — 4 200 ₽</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="bookMaster" class="form-label">Мастер</label>
-            <select id="bookMaster" class="form-control">
-              <option value="Любой свободный мастер">Любой свободный мастер</option>
-              <option value="Александр Воронов (Шеф-барбер)">Александр Воронов (Шеф-барбер)</option>
-              <option value="Елена Романова (Арт-директор & Колорист)">Елена Романова (Арт-директор & Колорист)</option>
-              <option value="Дмитрий Соколов (Топ-стилист)">Дмитрий Соколов (Топ-стилист)</option>
-              <option value="Анна Мельникова (Стилист по волосам & SPA)">Анна Мельникова (Стилист по волосам & SPA)</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="bookDate" class="form-label">Дата визита</label>
-              <input type="date" id="bookDate" class="form-control" required>
-            </div>
-            <div class="form-group">
-              <label for="bookTime" class="form-label">Время</label>
-              <select id="bookTime" class="form-control" required>
-                <option value="10:00">10:00</option>
-                <option value="11:30">11:30</option>
-                <option value="13:00">13:00</option>
-                <option value="14:30">14:30</option>
-                <option value="16:00">16:00</option>
-                <option value="17:30">17:30</option>
-                <option value="19:00">19:00</option>
-                <option value="20:30">20:30</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="bookName" class="form-label">Ваше имя</label>
-              <input type="text" id="bookName" class="form-control" placeholder="Иван" required>
-            </div>
-            <div class="form-group">
-              <label for="bookPhone" class="form-label">Телефон</label>
-              <input type="tel" id="bookPhone" class="form-control" placeholder="+7 (999) 000-00-00" required>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
-            Подтвердить запись
-          </button>
-        </form>
-
-        <div id="bookingSuccess" class="booking-success-message">
-          <div class="booking-success-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <h4 class="booking-success-title">Запись успешно оформлена!</h4>
-          <p class="booking-success-text">
-            Спасибо! Мы забронировали для вас время. Администратор свяжется с вами для подтверждения.
-          </p>
-          <div id="bookingSummaryDetails" style="background: var(--bg-surface); padding: 16px; border-radius: var(--radius-sm); font-size: 0.9rem; text-align: left; margin-bottom: 20px; line-height: 1.6; border: 1px solid var(--border-color);"></div>
-          <button id="bookingResetBtn" class="btn btn-primary">Отлично, закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== GALLERY LIGHTBOX MODAL ==================== -->
-  <div id="lightboxModal" class="modal-backdrop" style="z-index: 2100;">
-    <div style="position: relative; max-width: 900px; width: 90%; max-height: 90vh; display: flex; flex-direction: column; align-items: center;">
-      <button id="lightboxClose" class="modal-close-btn" style="position: absolute; top: -45px; right: 0; color: #fff;" aria-label="Закрыть">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <img id="lightboxImg" src="" alt="" style="max-height: 80vh; width: auto; object-fit: contain; border-radius: var(--radius-md); box-shadow: 0 10px 40px rgba(0,0,0,0.8); border: 1px solid var(--border-highlight);">
-      <p id="lightboxCaption" style="margin-top: 14px; font-size: 1rem; color: #fff; font-weight: 500;"></p>
-    </div>
-  </div>
 
   <script src="js/main.js"></script>
 </body>
